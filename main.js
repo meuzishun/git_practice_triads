@@ -19,4 +19,13 @@ const reportInfo = function(evt) {
     console.log(fileName);
 }
 
+const loadAudio = function() {
+    triads.forEach(triad => {
+        const audioFile = triad.dataset.audioFile;
+        const sample = setupSample(`audio/${audioFile}`);
+    });
+}
+
 triads.forEach(triad => triad.addEventListener('click', reportInfo));
+
+window.addEventListener('load', loadAudio);
