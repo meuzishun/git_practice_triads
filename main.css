@@ -22,3 +22,12 @@ body {
     grid-template-rows: repeat(3, 1fr);
     grid-gap: 1em;
 }
+
+.triad {
+    display: flex;
+    justify-content: center;
+    padding: 0.5em;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgba(16, 124, 218, 0.139);
+}
