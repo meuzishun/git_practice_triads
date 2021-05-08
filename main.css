@@ -9,3 +9,15 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 1em;
+}
+
+.container>div {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 1em;
+}
