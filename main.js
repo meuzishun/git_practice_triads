@@ -12,20 +12,39 @@ async function setupSample(audioFile) {
     return sample;
 }
 
-const triads = [...document.querySelectorAll('.triad')];
-
 const reportInfo = function(evt) {
     const fileName = evt.target.dataset.audioFile;
     console.log(fileName);
 }
 
+let testAudio = null;
 const loadAudio = function() {
-    triads.forEach(triad => {
-        const audioFile = triad.dataset.audioFile;
-        const sample = setupSample(`audio/${audioFile}`);
-    });
+    const testSample = 'audio/60.wav';
+    const sample = setupSample(testSample);
+    testAudio = sample;
+    // triads.forEach(triad => {
+        // const audioFile = triad.dataset.audioFile;
+        // const sample = setupSample(`audio/${audioFile}`);
+    // });
 }
+
+const playSample = function(sample) {
+    console.log(sample);
+    let sampleSource = audioCtx.createBufferSource();
+    console.log(sampleSource);
+    sampleSource.buffer = sample;
+    console.log(sampleSource);
+    // sampleSource.connect(audioCtx.destination);
+    // sample.start();
+}
+
+const triads = [...document.querySelectorAll('.triad')];
+
 
 triads.forEach(triad => triad.addEventListener('click', reportInfo));
 
 window.addEventListener('load', loadAudio);
+
+document.addEventListener('click', () => {
+    playSample(testAudio);
+});
