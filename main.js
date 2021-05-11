@@ -1,6 +1,7 @@
 
 const audioCtx = new AudioContext();
 const audioFiles = {};
+const triads = [...document.querySelectorAll('.triad')];
 
 const getFile = async function(audioContext, filepath) {
     const response = await fetch(filepath);
@@ -14,15 +15,9 @@ const setupSample = async function(audioFile) {
     return sample;
 }
 
-const loadAudio = async function() {
-    const testSample = 'audio/60.wav';
-    const sample = await setupSample(testSample);
-    audioFiles[testSample] = sample;
-    // triads.forEach(triad => {
-        // const audioFile = triad.dataset.audioFile;
-        // const sample = await setupSample(`audio/${audioFile}`);
-        // audioFiles[audioFile] = sample;
-    // });
+const loadAudio = async function(file) {
+    const sample = await setupSample(`audio/${file}`);
+    audioFiles[file] = sample;
     console.table(audioFiles);
 }
 
@@ -36,15 +31,24 @@ const playSample = function(sample) {
 const reportInfo = function(evt) {
     const fileName = evt.target.dataset.audioFile;
     console.log(fileName);
+    const sample = audioFiles[fileName];
+    // console.log(file);
+    playSample(sample);
 }
-const triads = [...document.querySelectorAll('.triad')];
 
 
-triads.forEach(triad => triad.addEventListener('click', reportInfo));
 
-window.addEventListener('load', loadAudio);
+triads.forEach(triad => triad.addEventListener('click', reportInfo, { capture: true }));
 
-document.addEventListener('click', () => {
-    playSample(testAudio);
+window.addEventListener('load', () => {
+    triads.forEach(triad => {
+        const audioFile = triad.dataset.audioFile;
+        console.log(audioFile);
+        loadAudio(audioFile);
+    });
 });
+
+// document.addEventListener('click', () => {
+//     playSample(testAudio);
+// });
 
