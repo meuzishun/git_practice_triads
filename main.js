@@ -1,43 +1,42 @@
-const audioCtx = new AudioContext();
 
-async function getFile(audioContext, filepath) {
+const audioCtx = new AudioContext();
+const audioFiles = {};
+
+const getFile = async function(audioContext, filepath) {
     const response = await fetch(filepath);
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
     return audioBuffer;
 }
 
-async function setupSample(audioFile) {
+const setupSample = async function(audioFile) {
     const sample = await getFile(audioCtx, audioFile);
     return sample;
 }
 
+const loadAudio = async function() {
+    const testSample = 'audio/60.wav';
+    const sample = await setupSample(testSample);
+    audioFiles[testSample] = sample;
+    // triads.forEach(triad => {
+        // const audioFile = triad.dataset.audioFile;
+        // const sample = await setupSample(`audio/${audioFile}`);
+        // audioFiles[audioFile] = sample;
+    // });
+    console.table(audioFiles);
+}
+
+const playSample = function(sample) {
+    let sampleSource = audioCtx.createBufferSource();
+    sampleSource.buffer = sample;
+    sampleSource.connect(audioCtx.destination);
+    sampleSource.start();
+}
+    
 const reportInfo = function(evt) {
     const fileName = evt.target.dataset.audioFile;
     console.log(fileName);
 }
-
-let testAudio = null;
-const loadAudio = function() {
-    const testSample = 'audio/60.wav';
-    const sample = setupSample(testSample);
-    testAudio = sample;
-    // triads.forEach(triad => {
-        // const audioFile = triad.dataset.audioFile;
-        // const sample = setupSample(`audio/${audioFile}`);
-    // });
-}
-
-const playSample = function(sample) {
-    console.log(sample);
-    let sampleSource = audioCtx.createBufferSource();
-    console.log(sampleSource);
-    sampleSource.buffer = sample;
-    console.log(sampleSource);
-    // sampleSource.connect(audioCtx.destination);
-    // sample.start();
-}
-
 const triads = [...document.querySelectorAll('.triad')];
 
 
@@ -48,3 +47,4 @@ window.addEventListener('load', loadAudio);
 document.addEventListener('click', () => {
     playSample(testAudio);
 });
+
